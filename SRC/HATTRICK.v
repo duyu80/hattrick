@@ -19,44 +19,44 @@ module HATTRICK_TOP (
 			input     HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L,
 			          HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
 					  HDD12_INSERT_L,HDD11_INSERT_L,HDD10_INSERT_L,HDD9_INSERT_L,
-					                 HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L;
+					                 HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L,
 			// 5v power good
 			input     P5V_GD_HDD4,P5V_GD_HDD3,P5V_GD_HDD2,P5V_GD_HDD1,
 			          P5V_GD_HDD8,P5V_GD_HDD7,P5V_GD_HDD6,P5V_GD_HDD5,
 					  P5V_GD_HDD12,P5V_GD_HDD11,P5V_GD_HDD10,P5V_GD_HDD9,
-					               P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13;
+					               P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13,
 			// 12v power good
 			input     P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1,
 			          P12V_GD_HDD8,P12V_GD_HDD7,P12V_GD_HDD6,P12V_GD_HDD5,
 					  P12V_GD_HDD12,P12V_GD_HDD11,P12V_GD_HDD10,P12V_GD_HDD9,
-					               P12V_GD_HDD15,P12V_GD_HDD14,P12V_GD_HDD13;
+					               P12V_GD_HDD15,P12V_GD_HDD14,P12V_GD_HDD13,
 			// HDD power enable
 			output    PWR_EN_HDD4_L,PWR_EN_HDD3_L,PWR_EN_HDD2_L,PWR_EN_HDD1_L,
 			          PWR_EN_HDD8_L,PWR_EN_HDD7_L,PWR_EN_HDD6_L,PWR_EN_HDD5_L,
 					  PWR_EN_HDD12_L,PWR_EN_HDD11_L,PWR_EN_HDD10_L,PWR_EN_HDD9_L,
-					               PWR_EN_HDD15_L,PWR_EN_HDD14_L,PWR_EN_HDD13_L;
+					               PWR_EN_HDD15_L,PWR_EN_HDD14_L,PWR_EN_HDD13_L,
 			// HDD health led
 			output    HDD4_Health_LED,HDD3_Health_LED,HDD2_Health_LED,HDD1_Health_LED,
 			          HDD8_Health_LED,HDD7_Health_LED,HDD6_Health_LED,HDD5_Health_LED,
 					  HDD12_Health_LED,HDD11_Health_LED,HDD10_Health_LED,HDD9_Health_LED,
-					                 HDD15_Health_LED,HDD14_Health_LED,HDD13_Health_LED;
+					                 HDD15_Health_LED,HDD14_Health_LED,HDD13_Health_LED,
 			// HDD fault led
 			output    HDD4_FAULT_LED,HDD3_FAULT_LED,HDD2_FAULT_LED,HDD1_FAULT_LED,
 			          HDD8_FAULT_LED,HDD7_FAULT_LED,HDD6_FAULT_LED,HDD5_FAULT_LED,
 					  HDD12_FAULT_LED,HDD11_FAULT_LED,HDD10_FAULT_LED,HDD9_FAULT_LED,
-					                 HDD15_FAULT_LED,HDD14_FAULT_LED,HDD13_FAULT_LED;
+					                 HDD15_FAULT_LED,HDD14_FAULT_LED,HDD13_FAULT_LED,
             // MINI SAS
-            input     A_MODPRESL,A_INTL,A_VACT_OC_L;
-            output    A_VMAN_EN_L,A_VACT_EN_L;
-			output    A_HEALTH_LED_L,A_FAULT_LED;
-			input     B_MODPRESL,B_INTL,B_VACT_OC_L;
-            output    B_VMAN_EN_L,B_VACT_EN_L;
-			output    B_HEALTH_LED_L,B_FAULT_LED;
+            input     A_MODPRESL,A_INTL,A_VACT_OC_L,
+            output    A_VMAN_EN_L,A_VACT_EN_L,
+			output    A_HEALTH_LED_L,A_FAULT_LED,
+			input     B_MODPRESL,B_INTL,B_VACT_OC_L,
+            output    B_VMAN_EN_L,B_VACT_EN_L,
+			output    B_HEALTH_LED_L,B_FAULT_LED,
             // Enclosure led
-			output    ENCLOSURE _HEALTH_LED_L;
-			output    ENCLOSURE _FAULT_LED;
+			output    ENCLOSURE_HEALTH_LED_L,
+			output    ENCLOSURE_FAULT_LED,
 			// hardware revision
-			input     Sideplane_REV_ID1,Sideplane_REV_ID0;
+			input     Sideplane_REV_ID1,Sideplane_REV_ID0,
 			// heart beat led
             output reg   HEART			
 			);
@@ -124,18 +124,18 @@ GPI    	GPI0_INST (
 			.DOUT1			(DIN_0),						
 			.RD_WR1		    (RD_WR),
 			
-			.DIN0           ( HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
-                              HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L       ),
-			.DIN1           (          1'b0,HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L,   
-                              HDD12_INSERT_L,HDD11_INSERT_L,HDD10_INSERT_L,HDD9_INSERT_L    ),
-			.DIN2           ( P5V_GD_HDD8,P5V_GD_HDD7,P5V_GD_HDD6,P5V_GD_HDD5,              
-                              P5V_GD_HDD4,P5V_GD_HDD3,P5V_GD_HDD2,P5V_GD_HDD1			    ),
-			.DIN3           (        1'b0,P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13,           
-                              P5V_GD_HDD12,P5V_GD_HDD11,P5V_GD_HDD10,P5V_GD_HDD9	        ),
-			.DIN4           ( P12V_GD_HDD8,P12V_GD_HDD7,P12V_GD_HDD6,P12V_GD_HDD5,              
-                              P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1			),			
-			.DIN5           (        1'b0,P12V_GD_HDD15,P12V_GD_HDD14,P12V_GD_HDD13,        
-                              P12V_GD_HDD12,P12V_GD_HDD11,P12V_GD_HDD10,P12V_GD_HDD9	    ),
+			.DIN0           ( {HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
+                              HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L}       ),
+			.DIN1           (          {1'b0,HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L,   
+                              HDD12_INSERT_L,HDD11_INSERT_L,HDD10_INSERT_L,HDD9_INSERT_L}    ),
+			.DIN2           ( {P5V_GD_HDD8,P5V_GD_HDD7,P5V_GD_HDD6,P5V_GD_HDD5,              
+                              P5V_GD_HDD4,P5V_GD_HDD3,P5V_GD_HDD2,P5V_GD_HDD1}			    ),
+			.DIN3           (        {1'b0,P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13,           
+                              P5V_GD_HDD12,P5V_GD_HDD11,P5V_GD_HDD10,P5V_GD_HDD9}	        ),
+			.DIN4           ( {P12V_GD_HDD8,P12V_GD_HDD7,P12V_GD_HDD6,P12V_GD_HDD5,              
+                              P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1}			),			
+			.DIN5           (        {1'b0,P12V_GD_HDD15,P12V_GD_HDD14,P12V_GD_HDD13,        
+                              P12V_GD_HDD12,P12V_GD_HDD11,P12V_GD_HDD10,P12V_GD_HDD9}	    ),
 			.DIN6           (0),
 			.DIN7           (0),
 			.DIN8           (0),
@@ -149,10 +149,10 @@ GPI    	GPI0_INST (
 			);
 
 // 10H --- HDD power enable
-GPO    GPO1_INST # (
+GPO     # (
             .GPO_DFT        (8'hff)
 			)
-            (
+GPO1_INST  (
 			.RESET_N		(RESET_N),
 			.SYSCLK			(SYSCLK),
 			
@@ -162,10 +162,10 @@ GPO    GPO1_INST # (
 			.RD_WR1		    (RD_WR),
 			.DIN1			(I2C_DOUT),
 			
-			.DO0		    ( PWR_EN_HDD8_L,PWR_EN_HDD7_L,PWR_EN_HDD6_L,PWR_EN_HDD5_L,
-                              PWR_EN_HDD4_L,PWR_EN_HDD3_L,PWR_EN_HDD2_L,PWR_EN_HDD1_L     ),
-			.DO1		    (               PWR_EN_HDD15_L,PWR_EN_HDD14_L,PWR_EN_HDD13_L,
-                              PWR_EN_HDD12_L,PWR_EN_HDD11_L,PWR_EN_HDD10_L,PWR_EN_HDD9_L  ),
+			.DO0		    ( {PWR_EN_HDD8_L,PWR_EN_HDD7_L,PWR_EN_HDD6_L,PWR_EN_HDD5_L,
+                              PWR_EN_HDD4_L,PWR_EN_HDD3_L,PWR_EN_HDD2_L,PWR_EN_HDD1_L}     ),
+			.DO1		    (               {PWR_EN_HDD15_L,PWR_EN_HDD14_L,PWR_EN_HDD13_L,
+                              PWR_EN_HDD12_L,PWR_EN_HDD11_L,PWR_EN_HDD10_L,PWR_EN_HDD9_L}  ),
 			.DO2		    (),
 			.DO3		    (),
 			.DO4		    (),
@@ -356,7 +356,7 @@ GPI    	GPI4_INST (
 			.DOUT1			(DIN_4),						
 			.RD_WR1		    (RD_WR),
 			
-			.DIN0           ( 4'h0,B_VACT_OC_L,B_INTL,B_MODPRESL,A_VACT_OC_L,A_INTL,A_MODPRESL ),
+			.DIN0           ( {4'h0,B_VACT_OC_L,B_INTL,B_MODPRESL,A_VACT_OC_L,A_INTL,A_MODPRESL} ),
 			.DIN1           (0),
 			.DIN2           (0),
 			.DIN3           (0),
@@ -375,10 +375,10 @@ GPI    	GPI4_INST (
 			);
 
 // 50H --- MINI SAS power enable
-GPO    GPO5_INST # (
+GPO     # (
             .GPO_DFT        (8'h00)
 			)
-            (
+GPO5_INST   (
 			.RESET_N		(RESET_N),
 			.SYSCLK			(SYSCLK),
 			
@@ -388,7 +388,7 @@ GPO    GPO5_INST # (
 			.RD_WR1		    (RD_WR),
 			.DIN1			(I2C_DOUT),
 			
-			.DO0		    ( B_VACT_EN_L,B_VMAN_EN_L,A_VACT_EN_L,A_VMAN_EN_L ),
+			.DO0		    ( {B_VACT_EN_L,B_VMAN_EN_L,A_VACT_EN_L,A_VMAN_EN_L} ),
 			.DO1		    (),
 			.DO2		    (),
 			.DO3		    (),
@@ -406,7 +406,7 @@ GPO    GPO5_INST # (
 			.DO15		    ()
 			);
 
-// 60H --- FAULT LED
+// 60H --- MINISAS LED
 wire    [7:0]  MINISAS_LEDA;
 wire    [7:0]  MINISAS_LEDB;
 
@@ -438,8 +438,8 @@ GPO    GPO6_INST (
 			.DO15		    ()
 			);
 
-// FAULT LED
-LED FAULT_LED_INST(
+// MINISAS LED
+LED MINISAS_LED_INST(
             .SYSCLK					(SYSCLK),
             .RESET_N				(RESET_N),
             .CLK_1HZ				(CLK_1HZ),
@@ -488,7 +488,7 @@ GPI    	GPI8_INST (
 			.DOUT1			(DIN_8),						
 			.RD_WR1		    (RD_WR),
 			
-			.DIN0           ( 6'h0,Sideplane_REV_ID1,Sideplane_REV_ID0 ),
+			.DIN0           ( {6'h0,Sideplane_REV_ID1,Sideplane_REV_ID0} ),
 			.DIN1           (0),
 			.DIN2           (0),
 			.DIN3           (0),
@@ -515,12 +515,12 @@ GPI    	GPIF_INST (
 			
 			.PORT_CS1		(PORT_CS[15]),
 			.OFFSET_SEL1	(OFFSET_SEL),
-			.DOUT1			(DIN_15),						
+			.DOUT1			(DIN_F),						
 			.RD_WR1		    (RD_WR),
 			
-			.DIN0           ( `DEVICE_ID_MSB ),
-			.DIN1           ( `DEVICE_ID_LSB ),
-			.DIN2           ( `CPLD_MAJ_VER  ),
+			.DIN0           ( `CPLD_MAJ_VER ),
+			.DIN1           ( `CPLD_MIN_VER ),
+			.DIN2           ( `CHECKSUM  ),
 			.DIN3           (0),
 			.DIN4           (0),
 			.DIN5           (0),

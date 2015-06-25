@@ -13,7 +13,7 @@ reg	[7:0]	    i2c_wrdata2;
 reg	[7:0]	    i2c_wrdata3;
 reg	[7:0]	    i2c_data_num;
 
-reg [16*8-1:0]  test;
+reg [64*8-1:0]  test;
 
 wire	[2:0]	adr;
 wire	[7:0]	dat_o;
@@ -218,9 +218,9 @@ initial
 		repeat (1000) @(posedge clk);
 		
 		//LED_TEST
-		// test = "LED_TEST";
-		// LED_TEST();
-		// repeat (1000) @(posedge clk);
+		test = "LED_TEST";
+		LED_TEST();
+		repeat (1000) @(posedge clk);
 		
 		//PRESENT TEST
 		// test = "PRESENT TEST";
@@ -294,21 +294,97 @@ endtask
 //***************************	LED TEST TASK	**************************
 task LED_TEST;
 	begin
-		\$display("*************************** I2C LED test begin ***************************\\n");
-		wb_write(`I2C_ADDR,8'h50,{`LED_ON,`LED_OFF},8'h00,8'h2);
+		\$display("*************************** Health LED test begin ***************************\\n");
+		test = "Health LED ON/OFF Test Write";
+		wb_write(`I2C_ADDR,8'h20,{`LED_ON,`LED_OFF},0-{`LED_ON,`LED_OFF},8'h3);
+		test = "Health LED ON/OFF Test Read";
+		wb_read(`I2C_ADDR,8'h1);
+		
+		if((tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED0 == `OFF) && (tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED1 == `ON))
+			begin
+				\$display("Health LED ON/OFF TEST Pass, the Health LED set code is %%x\\n", i2c_rddata1);
+			end
+		else
+			begin
+				\$display("Health LED ON/OFF TEST Fail, the Health LED set code is %%x\\n", i2c_rddata1);
+				\$stop;
+			end
+		
+		test = "Health LED0 BLK_4HZ LED1 BLK_2HZ Test Write";
+		wb_write(`I2C_ADDR,8'h20,{`BLK_2HZ,`BLK_4HZ},0 - {`BLK_2HZ,`BLK_4HZ},8'h3);
+		test = "Health LED0 BLK_4HZ LED1 BLK_2HZ Test Read";
+		wb_read(`I2C_ADDR,8'h1);
+		
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED0);
+		repeat (3126) @(posedge clk);
+		if(tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED0 == `OFF)
+			begin
+				\$display("Health LED0 BLK_4HZ TEST Pass, the Health LED set code is %%x\\n", i2c_rddata1);
+			end
+		else
+			begin
+				\$display("Health LED0 BLK_4HZ TEST Fail, the Health LED set code is %%x\\n", i2c_rddata1);
+				\$stop;
+			end
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED1);
+		repeat (6252) @(posedge clk);
+		if(tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED1 == `OFF)
+			begin
+				\$display("Health LED1 BLK_2HZ TEST Pass, the Health LED set code is %%x\\n", i2c_rddata1);
+			end
+		else
+			begin
+				\$display("Health LED1 BLK_2HZ TEST Fail, the Health LED set code is %%x\\n", i2c_rddata1);
+				\$stop;
+			end
+
+		\$display("*************************** Health LED test pass ***************************\\n");
+		
+		\$display("*************************** Fault LED test begin ***************************\\n");
+		wb_write(`I2C_ADDR,8'h30,{`LED_ON,`LED_OFF},0 - {`LED_ON,`LED_OFF},8'h3);
 		wb_read(`I2C_ADDR,8'h1);
 		
 		if((tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0 == `OFF) && (tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1 == `ON))
 			begin
-				\$display("LED TEST Pass, the HDD FLT LED data is %%x\\n", i2c_rddata1);
+				\$display("Fault LED ON/OFF TEST Pass, the Fault LED data is %%x\\n", i2c_rddata1);
 			end
 		else
 			begin
-				\$display("LED TEST Fail, the HDD FLT LED data is %%x\\n", i2c_rddata1);
+				\$display("Fault LED ON/OFF TEST Fail, the Fault LED data is %%x\\n", i2c_rddata1);
 				\$stop;
 			end
 		
-		\$display("*************************** I2C LED test pass ***************************\\n");
+		test = "Fault LED0 BLK_4HZ LED1 BLK_2HZ Test Write";
+		wb_write(`I2C_ADDR,8'h30,{`BLK_2HZ,`BLK_4HZ},0 - {`BLK_2HZ,`BLK_4HZ},8'h3);
+		test = "Fault LED0 BLK_4HZ LED1 BLK_2HZ Test Read";
+		wb_read(`I2C_ADDR,8'h1);
+		
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0);
+		repeat (3126) @(posedge clk);
+		if(tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0 == `OFF)
+			begin
+				\$display("Fault LED0 BLK_4HZ TEST Pass, the Fault LED set code is %%x\\n", i2c_rddata1);
+			end
+		else
+			begin
+				\$display("Fault LED0 BLK_4HZ TEST Fail, the Fault LED set code is %%x\\n", i2c_rddata1);
+				\$stop;
+			end
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1);
+		repeat (6252) @(posedge clk);
+		if(tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1 == `OFF)
+			begin
+				\$display("Fault LED1 BLK_2HZ TEST Pass, the Fault LED set code is %%x\\n", i2c_rddata1);
+			end
+		else
+			begin
+				\$display("Fault LED1 BLK_2HZ TEST Fail, the Fault LED set code is %%x\\n", i2c_rddata1);
+				\$stop;
+			end
+
+		\$display("*************************** Fault LED test pass ***************************\\n");
+		
+		\$display("*************************** LED test pass ***************************\\n");
 	end
 endtask
 

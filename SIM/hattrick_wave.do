@@ -31,6 +31,6 @@ configure wave -gridoffset 0
 configure wave -gridperiod 1
 configure wave -griddelta 40
 configure wave -timeline 0
-configure wave -timelineunits us
+configure wave -timelineunits ms
 update
 WaveRestoreZoom {0 ns} {5857677 ns}

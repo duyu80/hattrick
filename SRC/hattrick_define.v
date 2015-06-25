@@ -13,9 +13,13 @@
  * 							Globe Parameter								*
  *																		*
  ************************************************************************/
-//`define	SIM
-
+`define	SIM
+`ifdef SIM
+`define	CLK_FRQ         32'd25000
+`else
 `define	CLK_FRQ         32'd25000000
+`endif
+
 `define	I2C_ADDR		7'h61		//8bit address is C2
 `define I2C_CHECKSUM	1'b1        //0 means no checksum byte, 1 means one checksum byte after R/W
 

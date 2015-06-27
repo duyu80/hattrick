@@ -413,48 +413,61 @@ task LED_TEST;
 		$display("*************************** Health LED test pass ***************************\n");
 		
 		$display("*************************** Fault LED test begin ***************************\n");
-		wb_write(`I2C_ADDR,8'h30,{`LED_ON,`LED_OFF},0 - {`LED_ON,`LED_OFF},8'h3);
-		wb_read(`I2C_ADDR,8'h1);
 		
-		if((tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0 == `OFF) && (tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1 == `ON))
-			begin
-				$display("Fault LED ON/OFF TEST Pass, the Fault LED data is %x\n", i2c_rddata1);
-			end
-		else
-			begin
-				$display("Fault LED ON/OFF TEST Fail, the Fault LED data is %x\n", i2c_rddata1);
-				$stop;
-			end
-		
-		test = "Fault LED0 BLK_4HZ LED1 BLK_2HZ Test Write";
-		wb_write(`I2C_ADDR,8'h30,{`BLK_2HZ,`BLK_4HZ},0 - {`BLK_2HZ,`BLK_4HZ},8'h3);
-		test = "Fault LED0 BLK_4HZ LED1 BLK_2HZ Test Read";
+		test = "Fault LED0 BLK_07S LED1 BLK_05S Test Write";
+		wb_write(`I2C_ADDR,8'h30,{`BLK_05S,`BLK_07S},0 - {`BLK_05S,`BLK_07S},8'h3);
+		test = "Fault LED0 BLK_07S LED1 BLK_05S Test Read";
 		wb_read(`I2C_ADDR,8'h1);
 		
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0);
-		repeat (3126) @(posedge clk);
+		repeat (17502) @(posedge clk);
 		if(tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0 == `OFF)
 			begin
-				$display("Fault LED0 BLK_4HZ TEST Pass, the Fault LED set code is %x\n", i2c_rddata1);
+				$display("Fault LED0 BLK_07S TEST Pass, the Fault LED set code is %x\n", i2c_rddata1);
 			end
 		else
 			begin
-				$display("Fault LED0 BLK_4HZ TEST Fail, the Fault LED set code is %x\n", i2c_rddata1);
+				$display("Fault LED0 BLK_07S TEST Fail, the Fault LED set code is %x\n", i2c_rddata1);
 				$stop;
 			end
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1);
-		repeat (6252) @(posedge clk);
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1);
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1);
+		repeat (12502) @(posedge clk);
 		if(tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1 == `OFF)
 			begin
-				$display("Fault LED1 BLK_2HZ TEST Pass, the Fault LED set code is %x\n", i2c_rddata1);
+				$display("Fault LED1 BLK_05S TEST Pass, the Fault LED set code is %x\n", i2c_rddata1);
 			end
 		else
 			begin
-				$display("Fault LED1 BLK_2HZ TEST Fail, the Fault LED set code is %x\n", i2c_rddata1);
+				$display("Fault LED1 BLK_05S TEST Fail, the Fault LED set code is %x\n", i2c_rddata1);
 				$stop;
 			end
 
 		$display("*************************** Fault LED test pass ***************************\n");
+		
+		$display("*************************** MINISAS LED test begin ***************************\n");
+		
+		test = "MINISAS LED0 BLK_35S Test Write";
+		wb_write(`I2C_ADDR,8'h60,{`BLK_05S,`BLK_35S},0 - {`BLK_05S,`BLK_35S},8'h3);
+		test = "MINISAS LED0 BLK_35S LED1 BLK_05S Test Read";
+		wb_read(`I2C_ADDR,8'h1);
+		
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED1);
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED1);
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED1);
+		repeat (87502) @(posedge clk);
+		if(tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED0 == `OFF)
+			begin
+				$display("MINISAS LED0 BLK_35S TEST Pass, the MINISAS LED set code is %x\n", i2c_rddata1);
+			end
+		else
+			begin
+				$display("MINISAS LED0 BLK_35S TEST Fail, the MINISAS LED set code is %x\n", i2c_rddata1);
+				$stop;
+			end
+		
+		$display("*************************** MINISAS LED test pass ***************************\n");
 		
 		$display("*************************** LED test pass ***************************\n");
 	end

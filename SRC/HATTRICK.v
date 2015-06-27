@@ -192,7 +192,10 @@ wire    [7:0]  HEALTH_LED5;
 wire    [7:0]  HEALTH_LED6;
 wire    [7:0]  HEALTH_LED7;
 
-GPO    GPO2_INST (
+GPO       # (
+            .GPO_DFT        (8'h01)
+			)  
+GPO2_INST (
 			.RESET_N		(RESET_N),
 			.SYSCLK			(SYSCLK),
 			
@@ -280,7 +283,10 @@ wire    [7:0]  FAULT_LED5;
 wire    [7:0]  FAULT_LED6;
 wire    [7:0]  FAULT_LED7;
 
-GPO    GPO3_INST (
+GPO         # (
+            .GPO_DFT        (8'h01)
+			)
+GPO3_INST (
 			.RESET_N		(RESET_N),
 			.SYSCLK			(SYSCLK),
 			
@@ -410,7 +416,10 @@ GPO5_INST   (
 wire    [7:0]  MINISAS_LEDA;
 wire    [7:0]  MINISAS_LEDB;
 
-GPO    GPO6_INST (
+GPO         # (
+            .GPO_DFT        (8'h01)
+			)
+GPO6_INST (
 			.RESET_N		(RESET_N),
 			.SYSCLK			(SYSCLK),
 			

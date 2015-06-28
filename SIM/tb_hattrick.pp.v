@@ -318,7 +318,7 @@ task LED_TEST;
 		wb_read(`I2C_ADDR,8'h1);
 		
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED0);
-		repeat (3126) @(posedge clk);
+		repeat (`CLK_FRQ/8+10) @(posedge clk);
 		if(tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED0 == `OFF)
 			begin
 				\$display("Health LED0 BLK_4HZ TEST Pass, the Health LED set code is %%x\\n", i2c_rddata1);
@@ -329,7 +329,7 @@ task LED_TEST;
 				\$stop;
 			end
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED1);
-		repeat (6252) @(posedge clk);
+		repeat (`CLK_FRQ/4+10) @(posedge clk);
 		if(tb_hattrick.HATTRICK_TOP_INST.HEALTH_LED_INST.LED1 == `OFF)
 			begin
 				\$display("Health LED1 BLK_2HZ TEST Pass, the Health LED set code is %%x\\n", i2c_rddata1);
@@ -350,7 +350,7 @@ task LED_TEST;
 		wb_read(`I2C_ADDR,8'h1);
 		
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0);
-		repeat (17502) @(posedge clk);
+		repeat (`CLK_FRQ*7/10+10) @(posedge clk);
 		if(tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED0 == `OFF)
 			begin
 				\$display("Fault LED0 BLK_07S TEST Pass, the Fault LED set code is %%x\\n", i2c_rddata1);
@@ -363,7 +363,7 @@ task LED_TEST;
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1);
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1);
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1);
-		repeat (12502) @(posedge clk);
+		repeat (`CLK_FRQ/2+10) @(posedge clk);
 		if(tb_hattrick.HATTRICK_TOP_INST.FAULT_LED_INST.LED1 == `OFF)
 			begin
 				\$display("Fault LED1 BLK_05S TEST Pass, the Fault LED set code is %%x\\n", i2c_rddata1);
@@ -386,7 +386,7 @@ task LED_TEST;
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED1);
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED1);
 		@(posedge tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED1);
-		repeat (87502) @(posedge clk);
+		repeat (`CLK_FRQ*3.5+100) @(posedge clk);
 		if(tb_hattrick.HATTRICK_TOP_INST.MINISAS_LED_INST.LED0 == `OFF)
 			begin
 				\$display("MINISAS LED0 BLK_35S TEST Pass, the MINISAS LED set code is %%x\\n", i2c_rddata1);

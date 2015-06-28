@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BaliProject version="3.2" title="hattrick" device="LCMXO2-1200UHC-4FTG256C" default_implementation="hattrick">
+    <Options/>
+    <Implementation title="hattrick" dir="hattrick" description="hattrick" synthesis="synplify" default_strategy="Strategy1">
+        <Options def_top="HATTRICK_TOP"/>
+        <Source name="../SRC/GPI.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../SRC/GPO.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../SRC/HATTRICK.v" type="Verilog" type_short="Verilog">
+            <Options top_module="HATTRICK_TOP"/>
+        </Source>
+        <Source name="../SRC/hattrick_define.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../SRC/I2C.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../SRC/INTERRUPT.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../SRC/LED.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../SRC/LED_CNT.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../SRC/hattrick.lpf" type="Logic Preference" type_short="LPF">
+            <Options/>
+        </Source>
+    </Implementation>
+    <Strategy name="Strategy1" file="hattrick1.sty"/>
+</BaliProject>

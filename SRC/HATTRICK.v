@@ -60,7 +60,7 @@ module HATTRICK_TOP (
 			// Interrupt
 			output    I2C_ALERT_L,
 			// heart beat led
-            output reg   HEART			
+            output    HEART			
 			);
 
 //I2C wire
@@ -417,6 +417,7 @@ GPO5_INST   (
 // 60H --- MINISAS LED
 wire    [7:0]  MINISAS_LEDA;
 wire    [7:0]  MINISAS_LEDB;
+wire    [7:0]  ENCLOSURE_LED;
 
 GPO         # (
             .GPO_DFT        (8'h01)
@@ -433,7 +434,7 @@ GPO6_INST (
 
 			.DO0		    ( MINISAS_LEDA ),
 			.DO1		    ( MINISAS_LEDB ),
-			.DO2		    (),
+			.DO2		    ( ENCLOSURE_LED ),
 			.DO3		    (),
 			.DO4		    (),
 			.DO5		    (),
@@ -462,7 +463,7 @@ LED MINISAS_LED_INST(
 			
             .LED_REG0               ( MINISAS_LEDA ),
             .LED_REG1               ( MINISAS_LEDB ),
-            .LED_REG2               (),
+            .LED_REG2               ( ENCLOSURE_LED ),
             .LED_REG3               (),
             .LED_REG4               (),
             .LED_REG5               (),
@@ -473,8 +474,8 @@ LED MINISAS_LED_INST(
             .LED1                   ( A_FAULT_LED    ),
             .LED2                   ( B_HEALTH_LED_L ),
             .LED3                   ( B_FAULT_LED    ),
-            .LED4                   (),
-            .LED5                   (),
+            .LED4                   ( ENCLOSURE_HEALTH_LED_L ),
+            .LED5                   ( ENCLOSURE_FAULT_LED ),
             .LED6                   (),
             .LED7                   (),
             .LED8                   (),
@@ -486,7 +487,7 @@ LED MINISAS_LED_INST(
             .LED14                  (),
             .LED15                  ()
 		);
-
+/*
 // 70H --- ENCLOSURE LED
 wire    [7:0]  ENCLOSURE_LEDA;
 wire    [7:0]  ENCLOSURE_LEDB;
@@ -559,7 +560,7 @@ LED ENCLOSURE_LED_INST(
             .LED14                  (),
             .LED15                  ()
 		);
-
+*/
 // 80H --- HW REVISION
 GPI    	GPI8_INST (
 			.RESET_N		(RESET_N),
@@ -653,19 +654,20 @@ GPI    	GPIF_INST (
 			);
 
 //Heart Beat
-reg    [31:0]  CNT;
-always@(posedge SYSCLK or negedge RESET_N)
-	begin
-		if(RESET_N == 1'b0)
-			begin
-			    CNT                    <= 32'h0;
-				HEART                  <= 1'b0;
-			end
-		else
-		    begin
-			    CNT                    <= (CNT < `TIME_1S)? (CNT + 32'd1) : 32'd0;
-				HEART                  <= (CNT == `TIME_1S)? ~HEART : HEART;
-			end
-	end
+// reg    [31:0]  CNT;
+// always@(posedge SYSCLK or negedge RESET_N)
+	// begin
+		// if(RESET_N == 1'b0)
+			// begin
+			    // CNT                    <= 32'h0;
+				// HEART                  <= 1'b0;
+			// end
+		// else
+		    // begin
+			    // CNT                    <= (CNT < `TIME_1S)? (CNT + 32'd1) : 32'd0;
+				// HEART                  <= (CNT == `TIME_1S)? ~HEART : HEART;
+			// end
+	// end
+assign    HEART = CLK_1HZ;
 			
 endmodule

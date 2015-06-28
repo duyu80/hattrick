@@ -1,4 +1,4 @@
-#vdel -all -lib work
+vdel -all -lib work
 vlib work
 
 vlog  -work work tb_hattrick.v

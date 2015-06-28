@@ -13,7 +13,7 @@
  * 							Globe Parameter								*
  *																		*
  ************************************************************************/
-`define	SIM
+//`define	SIM
 `ifdef SIM
 `define	CLK_FRQ         32'd25000
 `else

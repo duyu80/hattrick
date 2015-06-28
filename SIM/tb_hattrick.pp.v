@@ -84,6 +84,8 @@ wire      ENCLOSURE_HEALTH_LED_L;
 wire      ENCLOSURE_FAULT_LED;
 // hardware revision
 reg       Sideplane_REV_ID1,Sideplane_REV_ID0;
+// Interrupt
+wire      I2C_ALERT_L;
 
 wb_master #(8, 8) u0 (
 		.clk(clk),
@@ -177,7 +179,9 @@ HATTRICK_TOP		HATTRICK_TOP_INST (
 				.ENCLOSURE_HEALTH_LED_L          ( ENCLOSURE_HEALTH_LED_L ),
 				.ENCLOSURE_FAULT_LED             ( ENCLOSURE_FAULT_LED    ),
 				.Sideplane_REV_ID0               ( Sideplane_REV_ID0      ),
-				.Sideplane_REV_ID1               ( Sideplane_REV_ID1      )
+				.Sideplane_REV_ID1               ( Sideplane_REV_ID1      ),
+				
+				.I2C_ALERT_L                     ( I2C_ALERT_L )
 				
 				);
 
@@ -191,23 +195,21 @@ initial
         rstn         = 0;
         i2c_wr       = 1;
 		test         = "Begin Test";
-
-        repeat (1000) @(posedge clk);
 		
 		{HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L,
 		HDD12_INSERT_L,HDD11_INSERT_L,HDD10_INSERT_L,HDD9_INSERT_L,
 		HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
-		HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L} = 15'h5123;
+		HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L} = 15'h0;
 
 		{P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13,
 		P5V_GD_HDD12,P5V_GD_HDD11,P5V_GD_HDD10,P5V_GD_HDD9,
 		P5V_GD_HDD8,P5V_GD_HDD7,P5V_GD_HDD6,P5V_GD_HDD5,
-		P5V_GD_HDD4,P5V_GD_HDD3,P5V_GD_HDD2,P5V_GD_HDD1} = 15'h7234;
+		P5V_GD_HDD4,P5V_GD_HDD3,P5V_GD_HDD2,P5V_GD_HDD1} = 15'h0;
 		  
         {P12V_GD_HDD15,P12V_GD_HDD14,P12V_GD_HDD13,
 		P12V_GD_HDD12,P12V_GD_HDD11,P12V_GD_HDD10,P12V_GD_HDD9,
 		P12V_GD_HDD8,P12V_GD_HDD7,P12V_GD_HDD6,P12V_GD_HDD5,
-		P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1} = 15'h5567;
+		P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1} = 15'h0;
 		
 		repeat (1000) @(posedge clk);
 		
@@ -222,10 +224,10 @@ initial
 		LED_TEST();
 		repeat (1000) @(posedge clk);
 		
-		//PRESENT TEST
-		// test = "PRESENT TEST";
-		// PRESENT_TEST();
-		// repeat (1000) @(posedge clk);
+		//Interrupt and HDD insert and 5V/12V power good test
+		test = "INTERRUPT Insert power good test";
+        INTERRUPT_TEST();
+		repeat (1000) @(posedge clk);
 		
 		\$display("*************************************************************************");
 		\$display("***********************     ALL TEST PASS!!!     ************************");
@@ -401,6 +403,66 @@ task LED_TEST;
 	end
 endtask
 
+//***************************	INTERRUPT TEST TASK	**************************
+task INTERRUPT_TEST;
+	begin
+	    \$display("*************************** INTERRUPT test begin ***************************\\n");
+		{HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L,
+		HDD12_INSERT_L,HDD11_INSERT_L,HDD10_INSERT_L,HDD9_INSERT_L,
+		HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
+		HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L} = 16'h5123;
+
+		{P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13,
+		P5V_GD_HDD12,P5V_GD_HDD11,P5V_GD_HDD10,P5V_GD_HDD9,
+		P5V_GD_HDD8,P5V_GD_HDD7,P5V_GD_HDD6,P5V_GD_HDD5,
+		P5V_GD_HDD4,P5V_GD_HDD3,P5V_GD_HDD2,P5V_GD_HDD1} = 16'h7234;
+		  
+        {P12V_GD_HDD15,P12V_GD_HDD14,P12V_GD_HDD13,
+		P12V_GD_HDD12,P12V_GD_HDD11,P12V_GD_HDD10,P12V_GD_HDD9,
+		P12V_GD_HDD8,P12V_GD_HDD7,P12V_GD_HDD6,P12V_GD_HDD5,
+		P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1} = 16'h5567;
+		
+		@(negedge tb_hattrick.HATTRICK_TOP_INST.I2C_ALERT_L);
+		
+        \$display("*********** Read INTERRUPT REG ***********");
+		wb_write(`I2C_ADDR,8'h90,0,0,8'h1);
+        wb_read(`I2C_ADDR,8'h1);
+		\$display("Interrupt register is %%x", i2c_rddata1);
+		if(i2c_rddata1 == 8'h7)
+		  \$display("INTERRUPT Read test pass\\n");
+		else
+		  begin
+		    \$display("INTERRUPT Read test fail");
+			\$stop;
+		  end
+		
+		if(tb_hattrick.HATTRICK_TOP_INST.I2C_ALERT_L)
+		    \$display("*********** Read INTERRUPT REG Successfully ***********");
+		
+        \$display("*********** Block Read 00H -- HDD insert and 5V/12V power good ***********");
+		wb_write(`I2C_ADDR,8'h00,0,0,8'h1);
+        wb_read(`I2C_ADDR,8'h3);
+		\$display("HDD INSERT is %%x and P5V_POWERGD is %%x and P12V_POWERGD is %%x", i2c_rddata1,i2c_rddata2,i2c_rddata3);
+		if((i2c_rddata1 != 16'h23) && (i2c_rddata2 != 16'h51) && (i2c_rddata3 != 16'h34))
+		  begin
+		    \$display("HDD insert and 5V/12V power good Read test fail");
+			\$stop;
+		  end
+		
+		wb_read(`I2C_ADDR,8'h3);
+		\$display("HDD INSERT is %%x and P5V_POWERGD is %%x and P12V_POWERGD is %%x", i2c_rddata1,i2c_rddata2,i2c_rddata3);
+		if((i2c_rddata1 == 16'h72) && (i2c_rddata2 == 16'h67) && (i2c_rddata3 == 16'h55))
+		  \$display("HDD insert and 5V/12V power good Read test pass\\n");
+		else
+		  begin
+		    \$display("HDD insert and 5V/12V power good Read test fail");
+			\$stop;
+		  end
+
+		\$display("*************************** INTERRUPT test pass ***************************\\n");
+	end
+endtask
+
 //******************************	I2C TASK	******************************
 task wb_write;
 	input	[7:0]	i2c_addr;
@@ -449,8 +511,10 @@ task wb_read;
 		
 		if(data_num == 8'h1)
 			\$display("The I2C received %%x", i2c_rddata1);
-		else
+		else if(data_num == 8'h2)
 			\$display("The I2C received %%x and %%x", i2c_rddata1, i2c_rddata2);
+		else if(data_num == 8'h3)
+			\$display("The I2C received %%x and %%x and %%x", i2c_rddata1, i2c_rddata2, i2c_rddata3);
 		//data1 = i2c_rddata1;
 		//data2 = i2c_rddata2;
 	end

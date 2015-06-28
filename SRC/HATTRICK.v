@@ -57,6 +57,8 @@ module HATTRICK_TOP (
 			output    ENCLOSURE_FAULT_LED,
 			// hardware revision
 			input     Sideplane_REV_ID1,Sideplane_REV_ID0,
+			// Interrupt
+			output    I2C_ALERT_L,
 			// heart beat led
             output reg   HEART			
 			);
@@ -486,6 +488,77 @@ LED MINISAS_LED_INST(
 		);
 
 // 70H --- ENCLOSURE LED
+wire    [7:0]  ENCLOSURE_LEDA;
+wire    [7:0]  ENCLOSURE_LEDB;
+
+GPO         # (
+            .GPO_DFT        (8'h01)
+			)
+GPO7_INST (
+			.RESET_N		(RESET_N),
+			.SYSCLK			(SYSCLK),
+			
+			.PORT_CS1		(PORT_CS[7]),
+			.OFFSET_SEL1	(OFFSET_SEL),
+			.DOUT1			(DIN_7),						
+			.RD_WR1		    (RD_WR),
+			.DIN1			(I2C_DOUT),
+
+			.DO0		    ( ENCLOSURE_LEDA ),
+			.DO1		    ( ENCLOSURE_LEDB ),
+			.DO2		    (),
+			.DO3		    (),
+			.DO4		    (),
+			.DO5		    (),
+			.DO6		    (),
+			.DO7		    (),
+			.DO8		    (),
+			.DO9		    (),
+			.DO10		    (),
+			.DO11		    (),
+			.DO12		    (),
+			.DO13		    (),
+			.DO14		    (),
+			.DO15		    ()
+			);
+
+// ENCLOSURE LED
+LED ENCLOSURE_LED_INST(
+            .SYSCLK					(SYSCLK),
+            .RESET_N				(RESET_N),
+            .CLK_1HZ				(CLK_1HZ),
+            .CLK_2HZ				(CLK_2HZ),
+            .CLK_4HZ				(CLK_4HZ),
+            .CLK_4HZ_500MS          (CLK_4HZ_500MS),
+            .CLK_4HZ_3500MS         (CLK_4HZ_3500MS),
+            .CLK_07S				(CLK_07S),
+			
+            .LED_REG0               ( ENCLOSURE_LEDA ),
+            .LED_REG1               ( ENCLOSURE_LEDB ),
+            .LED_REG2               (),
+            .LED_REG3               (),
+            .LED_REG4               (),
+            .LED_REG5               (),
+            .LED_REG6               (),
+            .LED_REG7               (),
+ 
+            .LED0                   ( ENCLOSURE_HEALTH_LED_L ),
+            .LED1                   ( ENCLOSURE_FAULT_LED    ),
+            .LED2                   (),
+            .LED3                   (),
+            .LED4                   (),
+            .LED5                   (),
+            .LED6                   (),
+            .LED7                   (),
+            .LED8                   (),
+            .LED9                   (),
+            .LED10                  (),
+            .LED11                  (),
+            .LED12                  (),
+            .LED13                  (),
+            .LED14                  (),
+            .LED15                  ()
+		);
 
 // 80H --- HW REVISION
 GPI    	GPI8_INST (
@@ -516,6 +589,40 @@ GPI    	GPI8_INST (
 			);
 
 // 90H --- INTERRUPT
+INTERRUPT    INTERRUPT_INST (
+			.RESET_N		(RESET_N),
+			.SYSCLK			(SYSCLK),
+			
+			.PORT_CS1		(PORT_CS[9]),
+			.OFFSET_SEL1	(OFFSET_SEL),
+			.DOUT1			(DIN_9),						
+			.RD_WR1		    (RD_WR),
+			
+			.DIN0           ( {HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
+                              HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L}       ),
+			.DIN1           (          {1'b0,HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L,   
+                              HDD12_INSERT_L,HDD11_INSERT_L,HDD10_INSERT_L,HDD9_INSERT_L}    ),
+			.DIN2           ( {P5V_GD_HDD8,P5V_GD_HDD7,P5V_GD_HDD6,P5V_GD_HDD5,              
+                              P5V_GD_HDD4,P5V_GD_HDD3,P5V_GD_HDD2,P5V_GD_HDD1}			    ),
+			.DIN3           (        {1'b0,P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13,           
+                              P5V_GD_HDD12,P5V_GD_HDD11,P5V_GD_HDD10,P5V_GD_HDD9}	        ),
+			.DIN4           ( {P12V_GD_HDD8,P12V_GD_HDD7,P12V_GD_HDD6,P12V_GD_HDD5,              
+                              P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1}			),			
+			.DIN5           (        {1'b0,P12V_GD_HDD15,P12V_GD_HDD14,P12V_GD_HDD13,        
+                              P12V_GD_HDD12,P12V_GD_HDD11,P12V_GD_HDD10,P12V_GD_HDD9}	    ),
+			.DIN6           (0),
+			.DIN7           (0),
+			.DIN8           (0),
+			.DIN9           (0),
+			.DIN10          (0),
+			.DIN11          (0),
+			.DIN12          (0),
+			.DIN13          (0),
+			.DIN14          (0),
+			.DIN15          (0),
+			
+			.I2C_ALERT_L    (I2C_ALERT_L)
+			);
 			
 // F0H --- HEADER
 GPI    	GPIF_INST (

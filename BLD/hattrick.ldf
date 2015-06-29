@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<BaliProject version="3.2" title="hattrick" device="LCMXO2-1200UHC-4FTG256C" default_implementation="hattrick">
+<BaliProject version="3.2" title="hattrick" device="LCMXO2-2000HC-4FTG256C" default_implementation="hattrick">
     <Options/>
     <Implementation title="hattrick" dir="hattrick" description="hattrick" synthesis="synplify" default_strategy="Strategy1">
         <Options def_top="HATTRICK_TOP"/>

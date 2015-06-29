@@ -417,7 +417,6 @@ GPO5_INST   (
 // 60H --- MINISAS LED
 wire    [7:0]  MINISAS_LEDA;
 wire    [7:0]  MINISAS_LEDB;
-wire    [7:0]  ENCLOSURE_LED;
 
 GPO         # (
             .GPO_DFT        (8'h01)
@@ -463,7 +462,7 @@ LED MINISAS_LED_INST(
 			
             .LED_REG0               ( MINISAS_LEDA ),
             .LED_REG1               ( MINISAS_LEDB ),
-            .LED_REG2               ( ENCLOSURE_LED ),
+            .LED_REG2               (),
             .LED_REG3               (),
             .LED_REG4               (),
             .LED_REG5               (),
@@ -474,8 +473,8 @@ LED MINISAS_LED_INST(
             .LED1                   ( A_FAULT_LED    ),
             .LED2                   ( B_HEALTH_LED_L ),
             .LED3                   ( B_FAULT_LED    ),
-            .LED4                   ( ENCLOSURE_HEALTH_LED_L ),
-            .LED5                   ( ENCLOSURE_FAULT_LED ),
+            .LED4                   (),
+            .LED5                   (),
             .LED6                   (),
             .LED7                   (),
             .LED8                   (),
@@ -487,7 +486,7 @@ LED MINISAS_LED_INST(
             .LED14                  (),
             .LED15                  ()
 		);
-/*
+
 // 70H --- ENCLOSURE LED
 wire    [7:0]  ENCLOSURE_LEDA;
 wire    [7:0]  ENCLOSURE_LEDB;
@@ -560,7 +559,7 @@ LED ENCLOSURE_LED_INST(
             .LED14                  (),
             .LED15                  ()
 		);
-*/
+
 // 80H --- HW REVISION
 GPI    	GPI8_INST (
 			.RESET_N		(RESET_N),

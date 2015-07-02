@@ -151,8 +151,12 @@ GPI    	GPI0_INST (
 			);
 
 // 10H --- HDD power enable
+wire        PWR_EN_HDD4_L_I2C,PWR_EN_HDD3_L_I2C,PWR_EN_HDD2_L_I2C,PWR_EN_HDD1_L_I2C,
+            PWR_EN_HDD8_L_I2C,PWR_EN_HDD7_L_I2C,PWR_EN_HDD6_L_I2C,PWR_EN_HDD5_L_I2C,
+            PWR_EN_HDD12_L_I2C,PWR_EN_HDD11_L_I2C,PWR_EN_HDD10_L_I2C,PWR_EN_HDD9_L_I2C,
+            PWR_EN_HDD15_L_I2C,PWR_EN_HDD14_L_I2C,PWR_EN_HDD13_L_I2C;
 GPO     # (
-            .GPO_DFT        (8'hff)
+            .GPO_DFT        (8'h00)
 			)
 GPO1_INST  (
 			.RESET_N		(RESET_N),
@@ -164,10 +168,10 @@ GPO1_INST  (
 			.RD_WR1		    (RD_WR),
 			.DIN1			(I2C_DOUT),
 			
-			.DO0		    ( {PWR_EN_HDD8_L,PWR_EN_HDD7_L,PWR_EN_HDD6_L,PWR_EN_HDD5_L,
-                              PWR_EN_HDD4_L,PWR_EN_HDD3_L,PWR_EN_HDD2_L,PWR_EN_HDD1_L}     ),
-			.DO1		    (               {PWR_EN_HDD15_L,PWR_EN_HDD14_L,PWR_EN_HDD13_L,
-                              PWR_EN_HDD12_L,PWR_EN_HDD11_L,PWR_EN_HDD10_L,PWR_EN_HDD9_L}  ),
+			.DO0		    ( {PWR_EN_HDD8_L_I2C,PWR_EN_HDD7_L_I2C,PWR_EN_HDD6_L_I2C,PWR_EN_HDD5_L_I2C,
+                              PWR_EN_HDD4_L_I2C,PWR_EN_HDD3_L_I2C,PWR_EN_HDD2_L_I2C,PWR_EN_HDD1_L_I2C}     ),
+			.DO1		    (               {PWR_EN_HDD15_L_I2C,PWR_EN_HDD14_L_I2C,PWR_EN_HDD13_L_I2C,
+                              PWR_EN_HDD12_L_I2C,PWR_EN_HDD11_L_I2C,PWR_EN_HDD10_L_I2C,PWR_EN_HDD9_L_I2C}  ),
 			.DO2		    (),
 			.DO3		    (),
 			.DO4		    (),
@@ -184,6 +188,45 @@ GPO1_INST  (
 			.DO15		    ()
 			);
 
+HDD_PWR  HDD_PWR_INST (
+    .SYSCLK	              ( SYSCLK              ),
+    .RESET_N              ( RESET_N             ),
+    .CLK_1HZ              ( CLK_1HZ             ),
+    					  			
+    .PWR_EN_HDD1_L_I2C	  ( PWR_EN_HDD1_L_I2C   ),
+    .PWR_EN_HDD2_L_I2C	  ( PWR_EN_HDD2_L_I2C   ),
+    .PWR_EN_HDD3_L_I2C	  ( PWR_EN_HDD3_L_I2C   ),
+    .PWR_EN_HDD4_L_I2C	  ( PWR_EN_HDD4_L_I2C   ),
+    .PWR_EN_HDD5_L_I2C	  ( PWR_EN_HDD5_L_I2C   ),
+    .PWR_EN_HDD6_L_I2C	  ( PWR_EN_HDD6_L_I2C   ),
+    .PWR_EN_HDD7_L_I2C	  ( PWR_EN_HDD7_L_I2C   ),
+    .PWR_EN_HDD8_L_I2C	  ( PWR_EN_HDD8_L_I2C   ),
+    .PWR_EN_HDD9_L_I2C	  ( PWR_EN_HDD9_L_I2C   ),
+    .PWR_EN_HDD10_L_I2C	  ( PWR_EN_HDD10_L_I2C  ),
+    .PWR_EN_HDD11_L_I2C	  ( PWR_EN_HDD11_L_I2C  ),
+    .PWR_EN_HDD12_L_I2C	  ( PWR_EN_HDD12_L_I2C  ),
+    .PWR_EN_HDD13_L_I2C	  ( PWR_EN_HDD13_L_I2C  ),
+    .PWR_EN_HDD14_L_I2C	  ( PWR_EN_HDD14_L_I2C  ),
+    .PWR_EN_HDD15_L_I2C	  ( PWR_EN_HDD15_L_I2C  ),
+    								
+    .PWR_EN_HDD1_L        ( PWR_EN_HDD1_L       ),
+    .PWR_EN_HDD2_L        ( PWR_EN_HDD2_L       ),
+    .PWR_EN_HDD3_L        ( PWR_EN_HDD3_L       ),
+    .PWR_EN_HDD4_L        ( PWR_EN_HDD4_L       ),
+    .PWR_EN_HDD5_L        ( PWR_EN_HDD5_L       ),
+    .PWR_EN_HDD6_L        ( PWR_EN_HDD6_L       ),
+    .PWR_EN_HDD7_L        ( PWR_EN_HDD7_L       ),
+    .PWR_EN_HDD8_L        ( PWR_EN_HDD8_L       ),
+    .PWR_EN_HDD9_L        ( PWR_EN_HDD9_L       ),
+    .PWR_EN_HDD10_L       ( PWR_EN_HDD10_L      ),
+    .PWR_EN_HDD11_L       ( PWR_EN_HDD11_L      ),
+    .PWR_EN_HDD12_L       ( PWR_EN_HDD12_L      ),
+    .PWR_EN_HDD13_L       ( PWR_EN_HDD13_L      ),
+    .PWR_EN_HDD14_L       ( PWR_EN_HDD14_L      ),
+    .PWR_EN_HDD15_L       ( PWR_EN_HDD15_L      )	
+
+);
+			
 // 20H --- HEALTH LED
 wire    [7:0]  HEALTH_LED0;
 wire    [7:0]  HEALTH_LED1;

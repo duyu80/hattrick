@@ -17,6 +17,7 @@ add wave -noupdate -group GPO5_INST /tb_hattrick/HATTRICK_TOP_INST/GPO5_INST/*
 add wave -noupdate -group GPO6_INST /tb_hattrick/HATTRICK_TOP_INST/GPO6_INST/*
 add wave -noupdate -group MINISAS_LED_INST /tb_hattrick/HATTRICK_TOP_INST/MINISAS_LED_INST/*
 add wave -noupdate -group INTERRUPT_INST /tb_hattrick/HATTRICK_TOP_INST/INTERRUPT_INST/*
+add wave -noupdate -group HDD_PWR_INST /tb_hattrick/HATTRICK_TOP_INST/HDD_PWR_INST/*
 
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {3457351 ns} 0}

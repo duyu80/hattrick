@@ -27,6 +27,9 @@
         <Source name="../SRC/LED_CNT.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
+        <Source name="../SRC/HDD_PWR.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
         <Source name="../SRC/hattrick.lpf" type="Logic Preference" type_short="LPF">
             <Options/>
         </Source>

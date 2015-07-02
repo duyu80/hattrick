@@ -17,6 +17,7 @@ vlog  -work work ../SRC/GPO.v
 vlog  -work work ../SRC/LED.v
 vlog  -work work ../SRC/LED_CNT.v
 vlog  -work work ../SRC/INTERRUPT.v
+vlog  -work work ../SRC/HDD_PWR.v
 
 #Load the design. Use required libraries.#
 #vsim -t ns -novopt +notimingchecks work.tb_hattrick

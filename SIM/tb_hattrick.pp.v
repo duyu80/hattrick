@@ -236,7 +236,95 @@ initial
 
 	end
 
+//***************************	HDD Power Up Check	**************************
+integer  to_counter;
+reg      timeout;
+always@( posedge clk or posedge rstn)
+    begin
+	    if(rstn)
+		    begin
+			    timeout = 0;  to_counter = 0;
+                while (PWR_EN_HDD1_L && !timeout) begin 
+                    @(posedge clk); 
+                    if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                    to_counter = to_counter+1; 
+                end
+                if (timeout) begin
+                    \$display ("Timeout while waiting for HDD1 Power Up");
+                    \$stop;
+                end
+				
+				if(!PWR_EN_HDD1_L)
+				begin
+				    timeout = 0;  to_counter = 0;
+                    while (PWR_EN_HDD2_L && !timeout) begin 
+                        @(posedge clk); 
+                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        to_counter = to_counter+1; 
+                    end
+                    if (timeout) begin
+                        \$display ("Timeout while waiting for HDD2 Power Up");
+                        \$stop;
+                    end
+				end
+				
+				if(!PWR_EN_HDD2_L)
+				begin
+				    timeout = 0;  to_counter = 0;
+                    while (PWR_EN_HDD3_L && !timeout) begin 
+                        @(posedge clk); 
+                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        to_counter = to_counter+1; 
+                    end
+                    if (timeout) begin
+                        \$display ("Timeout while waiting for HDD3 Power Up");
+                        \$stop;
+                    end
+				end
 
+				if(!PWR_EN_HDD3_L)
+				begin
+				    timeout = 0;  to_counter = 0;
+                    while (PWR_EN_HDD4_L && !timeout) begin 
+                        @(posedge clk); 
+                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        to_counter = to_counter+1; 
+                    end
+                    if (timeout) begin
+                        \$display ("Timeout while waiting for HDD4 Power Up");
+                        \$stop;
+                    end
+				end
+
+				if(!PWR_EN_HDD4_L)
+				begin
+				    timeout = 0;  to_counter = 0;
+                    while (PWR_EN_HDD5_L && !timeout) begin 
+                        @(posedge clk); 
+                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        to_counter = to_counter+1; 
+                    end
+                    if (timeout) begin
+                        \$display ("Timeout while waiting for HDD5 Power Up");
+                        \$stop;
+                    end
+				end
+				
+				if(!PWR_EN_HDD14_L)
+				begin
+				    timeout = 0;  to_counter = 0;
+                    while (PWR_EN_HDD15_L && !timeout) begin 
+                        @(posedge clk); 
+                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        to_counter = to_counter+1; 
+                    end
+                    if (timeout) begin
+                        \$display ("Timeout while waiting for HDD15 Power Up");
+                        \$stop;
+                    end
+				end				
+			end
+	end
 
 
 //***************************	HEADER TEST TASK	**************************

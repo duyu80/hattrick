@@ -238,7 +238,7 @@ wire    [7:0]  HEALTH_LED6;
 wire    [7:0]  HEALTH_LED7;
 
 GPO       # (
-            .GPO_DFT        (8'h01)
+            .GPO_DFT        (8'h11)
 			)  
 GPO2_INST (
 			.RESET_N		(RESET_N),
@@ -329,7 +329,7 @@ wire    [7:0]  FAULT_LED6;
 wire    [7:0]  FAULT_LED7;
 
 GPO         # (
-            .GPO_DFT        (8'h01)
+            .GPO_DFT        (8'h11)
 			)
 GPO3_INST (
 			.RESET_N		(RESET_N),
@@ -462,7 +462,7 @@ wire    [7:0]  MINISAS_LEDA;
 wire    [7:0]  MINISAS_LEDB;
 
 GPO         # (
-            .GPO_DFT        (8'h01)
+            .GPO_DFT        (8'h11)
 			)
 GPO6_INST (
 			.RESET_N		(RESET_N),
@@ -535,7 +535,7 @@ wire    [7:0]  ENCLOSURE_LEDA;
 wire    [7:0]  ENCLOSURE_LEDB;
 
 GPO         # (
-            .GPO_DFT        (8'h01)
+            .GPO_DFT        (8'h11)
 			)
 GPO7_INST (
 			.RESET_N		(RESET_N),

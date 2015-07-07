@@ -21,7 +21,7 @@
 `endif
 
 `define	I2C_ADDR		7'h61		//8bit address is C2
-`define I2C_CHECKSUM	1'b1        //0 means no checksum byte, 1 means one checksum byte after R/W
+`define I2C_CHECKSUM	1'b0        //0 means no checksum byte, 1 means one checksum byte after R/W
 
 `define	FLT_DFT			8'b0001_0001
 `define	PWR_DFT			8'hff
@@ -50,7 +50,7 @@
 
 
 `define CPLD_MAJ_VER    8'h00
-`define CPLD_MIN_VER    8'h01
+`define CPLD_MIN_VER    8'h02
 `define CHECKSUM        8'h0 - `CPLD_MAJ_VER - `CPLD_MIN_VER
 
 `define IDLE            ('b1 << 0)

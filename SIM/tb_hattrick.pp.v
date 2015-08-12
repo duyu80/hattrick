@@ -88,6 +88,8 @@ wire      ENCLOSURE_FAULT_LED;
 reg       Sideplane_REV_ID1,Sideplane_REV_ID0;
 // Interrupt
 wire      I2C_ALERT_L;
+// Spin up
+reg       spinup_done;
 
 wb_master #(8, 8) u0 (
 		.clk(clk),
@@ -197,11 +199,12 @@ initial
         rstn         = 0;
         i2c_wr       = 1;
 		test         = "Begin Test";
+		spinup_done  = 0;
 		
 		{HDD15_INSERT_L,HDD14_INSERT_L,HDD13_INSERT_L,
 		HDD12_INSERT_L,HDD11_INSERT_L,HDD10_INSERT_L,HDD9_INSERT_L,
 		HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
-		HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L} = 15'h0;
+		HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L} = 15'h80;
 
 		{P5V_GD_HDD15,P5V_GD_HDD14,P5V_GD_HDD13,
 		P5V_GD_HDD12,P5V_GD_HDD11,P5V_GD_HDD10,P5V_GD_HDD9,
@@ -212,10 +215,12 @@ initial
 		P12V_GD_HDD12,P12V_GD_HDD11,P12V_GD_HDD10,P12V_GD_HDD9,
 		P12V_GD_HDD8,P12V_GD_HDD7,P12V_GD_HDD6,P12V_GD_HDD5,
 		P12V_GD_HDD4,P12V_GD_HDD3,P12V_GD_HDD2,P12V_GD_HDD1} = 15'h0;
-		
-		repeat (1000) @(posedge clk);
-		
+
+		repeat (100) @(posedge clk);
 		rstn = 1;
+		
+		@(negedge PWR_EN_HDD15_L)
+		spinup_done  = 1;
 		
         test = "HEADER_TEST";
 		HEADER_TEST();
@@ -226,10 +231,11 @@ initial
 		LED_TEST();
 		repeat (1000) @(posedge clk);
 		
+		// ****** Current design already remove interrupt, so delete this task ******
 		//Interrupt and HDD insert and 5V/12V power good test
-		test = "INTERRUPT Insert power good test";
-        INTERRUPT_TEST();
-		repeat (1000) @(posedge clk);
+		//test = "INTERRUPT Insert power good test";
+        //INTERRUPT_TEST();
+		//repeat (1000) @(posedge clk);
 		
 		\$display("*************************************************************************");
 		\$display("***********************     ALL TEST PASS!!!     ************************");
@@ -243,12 +249,12 @@ integer  to_counter;
 reg      timeout;
 always@( posedge clk or posedge rstn)
     begin
-	    if(rstn)
+	    if(rstn && !spinup_done)
 		    begin
 			    timeout = 0;  to_counter = 0;
                 while (PWR_EN_HDD1_L && !timeout) begin 
                     @(posedge clk); 
-                    if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                    if (to_counter == (`CLK_FRQ * `SPINUP_DELAY + 10)) begin timeout = 1;  end
                     to_counter = to_counter+1; 
                 end
                 if (timeout) begin
@@ -261,7 +267,7 @@ always@( posedge clk or posedge rstn)
 				    timeout = 0;  to_counter = 0;
                     while (PWR_EN_HDD2_L && !timeout) begin 
                         @(posedge clk); 
-                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        if (to_counter == (`CLK_FRQ * `SPINUP_DELAY + 10)) begin timeout = 1;  end
                         to_counter = to_counter+1; 
                     end
                     if (timeout) begin
@@ -275,7 +281,7 @@ always@( posedge clk or posedge rstn)
 				    timeout = 0;  to_counter = 0;
                     while (PWR_EN_HDD3_L && !timeout) begin 
                         @(posedge clk); 
-                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        if (to_counter == (`CLK_FRQ * `SPINUP_DELAY + 10)) begin timeout = 1;  end
                         to_counter = to_counter+1; 
                     end
                     if (timeout) begin
@@ -289,7 +295,7 @@ always@( posedge clk or posedge rstn)
 				    timeout = 0;  to_counter = 0;
                     while (PWR_EN_HDD4_L && !timeout) begin 
                         @(posedge clk); 
-                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        if (to_counter == (`CLK_FRQ * `SPINUP_DELAY + 10)) begin timeout = 1;  end
                         to_counter = to_counter+1; 
                     end
                     if (timeout) begin
@@ -303,7 +309,7 @@ always@( posedge clk or posedge rstn)
 				    timeout = 0;  to_counter = 0;
                     while (PWR_EN_HDD5_L && !timeout) begin 
                         @(posedge clk); 
-                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        if (to_counter == (`CLK_FRQ * `SPINUP_DELAY + 10)) begin timeout = 1;  end
                         to_counter = to_counter+1; 
                     end
                     if (timeout) begin
@@ -317,7 +323,7 @@ always@( posedge clk or posedge rstn)
 				    timeout = 0;  to_counter = 0;
                     while (PWR_EN_HDD15_L && !timeout) begin 
                         @(posedge clk); 
-                        if (to_counter == (`CLK_FRQ + 10)) begin timeout = 1;  end
+                        if (to_counter == (`CLK_FRQ * `SPINUP_DELAY + 10)) begin timeout = 1;  end
                         to_counter = to_counter+1; 
                     end
                     if (timeout) begin

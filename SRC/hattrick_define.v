@@ -20,6 +20,10 @@
 `define	CLK_FRQ         32'd25000000
 `endif
 
+`define CPLD_MAJ_VER    8'h00
+`define CPLD_MIN_VER    8'h03
+`define CHECKSUM        8'h0 - `CPLD_MAJ_VER - `CPLD_MIN_VER
+
 `define	I2C_ADDR		7'h61		//8bit address is C2
 `define I2C_CHECKSUM	1'b0        //0 means no checksum byte, 1 means one checksum byte after R/W
 
@@ -46,12 +50,7 @@
 `define FRQ_100K        32'd125
 `define TIME_1S         32'd25000000
 `define TIME_100MS      32'd2500000
-
-
-
-`define CPLD_MAJ_VER    8'h00
-`define CPLD_MIN_VER    8'h02
-`define CHECKSUM        8'h0 - `CPLD_MAJ_VER - `CPLD_MIN_VER
+`define SPINUP_DELAY    2
 
 `define IDLE            ('b1 << 0)
 `define ACT_RECV        ('b1 << 1)

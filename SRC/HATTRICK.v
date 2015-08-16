@@ -81,6 +81,8 @@ wire    [7:0]	LED_REG5;
 wire    [7:0]	LED_REG6;
 wire    [7:0]	LED_REG7;
 
+wire            SOFT_RST;
+wire            SYSTEM_RST_N = RESET_N && !SOFT_RST;
 
 //**************************************************************************
 //**                          
@@ -159,7 +161,7 @@ GPO     # (
             .GPO_DFT        (8'h00)
 			)
 GPO1_INST  (
-			.RESET_N		(RESET_N),
+			.RESET_N		(SYSTEM_RST_N),
 			.SYSCLK			(SYSCLK),
 			
 			.PORT_CS1		(PORT_CS[1]),
@@ -190,7 +192,7 @@ GPO1_INST  (
 
 HDD_PWR  HDD_PWR_INST (
     .SYSCLK	              ( SYSCLK              ),
-    .RESET_N              ( RESET_N             ),
+    .RESET_N              ( SYSTEM_RST_N        ),
     .CLK_1HZ              ( CLK_1HZ             ),
     					  			
     .PWR_EN_HDD1_L_I2C	  ( PWR_EN_HDD1_L_I2C   ),
@@ -257,7 +259,7 @@ GPO       # (
             .GPO_DFT        (8'h11)
 			)  
 GPO2_INST (
-			.RESET_N		(RESET_N),
+			.RESET_N		(SYSTEM_RST_N),
 			.SYSCLK			(SYSCLK),
 			
 			.PORT_CS1		(PORT_CS[2]),
@@ -287,7 +289,7 @@ GPO2_INST (
 // LED CONTROL
 LED_CNT	LED_CNT_INST (
 			.SYSCLK				    (SYSCLK),
-			.RESET_N			    (RESET_N),
+			.RESET_N			    (SYSTEM_RST_N),
 			.CLK_1HZ			    (CLK_1HZ),
 			.CLK_2HZ			    (CLK_2HZ),
 			.CLK_4HZ			    (CLK_4HZ),
@@ -299,7 +301,7 @@ LED_CNT	LED_CNT_INST (
 // HEALTH LED
 LED HEALTH_LED_INST(
             .SYSCLK					(SYSCLK),
-            .RESET_N				(RESET_N),
+            .RESET_N				(SYSTEM_RST_N),
             .CLK_1HZ				(CLK_1HZ),
             .CLK_2HZ				(CLK_2HZ),
             .CLK_4HZ				(CLK_4HZ),
@@ -348,7 +350,7 @@ GPO         # (
             .GPO_DFT        (8'h11)
 			)
 GPO3_INST (
-			.RESET_N		(RESET_N),
+			.RESET_N		(SYSTEM_RST_N),
 			.SYSCLK			(SYSCLK),
 			
 			.PORT_CS1		(PORT_CS[3]),
@@ -378,7 +380,7 @@ GPO3_INST (
 // FAULT LED
 LED FAULT_LED_INST(
             .SYSCLK					(SYSCLK),
-            .RESET_N				(RESET_N),
+            .RESET_N				(SYSTEM_RST_N),
             .CLK_1HZ				(CLK_1HZ),
             .CLK_2HZ				(CLK_2HZ),
             .CLK_4HZ				(CLK_4HZ),
@@ -446,7 +448,7 @@ GPO     # (
             .GPO_DFT        (8'h00)
 			)
 GPO5_INST   (
-			.RESET_N		(RESET_N),
+			.RESET_N		(SYSTEM_RST_N),
 			.SYSCLK			(SYSCLK),
 			
 			.PORT_CS1		(PORT_CS[5]),
@@ -481,7 +483,7 @@ GPO         # (
             .GPO_DFT        (8'h11)
 			)
 GPO6_INST (
-			.RESET_N		(RESET_N),
+			.RESET_N		(SYSTEM_RST_N),
 			.SYSCLK			(SYSCLK),
 			
 			.PORT_CS1		(PORT_CS[6]),
@@ -511,7 +513,7 @@ GPO6_INST (
 // MINISAS LED
 LED MINISAS_LED_INST(
             .SYSCLK					(SYSCLK),
-            .RESET_N				(RESET_N),
+            .RESET_N				(SYSTEM_RST_N),
             .CLK_1HZ				(CLK_1HZ),
             .CLK_2HZ				(CLK_2HZ),
             .CLK_4HZ				(CLK_4HZ),
@@ -554,7 +556,7 @@ GPO         # (
             .GPO_DFT        (8'h11)
 			)
 GPO7_INST (
-			.RESET_N		(RESET_N),
+			.RESET_N		(SYSTEM_RST_N),
 			.SYSCLK			(SYSCLK),
 			
 			.PORT_CS1		(PORT_CS[7]),
@@ -584,7 +586,7 @@ GPO7_INST (
 // ENCLOSURE LED
 LED ENCLOSURE_LED_INST(
             .SYSCLK					(SYSCLK),
-            .RESET_N				(RESET_N),
+            .RESET_N				(SYSTEM_RST_N),
             .CLK_1HZ				(CLK_1HZ),
             .CLK_2HZ				(CLK_2HZ),
             .CLK_4HZ				(CLK_4HZ),
@@ -681,6 +683,38 @@ INTERRUPT    INTERRUPT_INST (
 			.DIN15          (0),
 			
 			.I2C_ALERT_L    (I2C_ALERT_L)
+			);
+
+// A0H --- Software reset
+GPO_Pulse  #     (
+            .GPO_DFT        (8'h0)
+			)
+GPO_Pulse_INST (
+			.RESET_N		(RESET_N),
+			.SYSCLK			(SYSCLK),
+			
+			.PORT_CS1		(PORT_CS[10]),
+			.OFFSET_SEL1	(OFFSET_SEL),
+			.DOUT1			(DIN_A),						
+			.RD_WR1		    (RD_WR),
+			.DIN1			(I2C_DOUT),
+
+			.DO0		    ( SOFT_RST ),
+			.DO1		    (),
+			.DO2		    (),
+			.DO3		    (),
+			.DO4		    (),
+			.DO5		    (),
+			.DO6		    (),
+			.DO7		    (),
+			.DO8		    (),
+			.DO9		    (),
+			.DO10		    (),
+			.DO11		    (),
+			.DO12		    (),
+			.DO13		    (),
+			.DO14		    (),
+			.DO15		    ()
 			);
 			
 // F0H --- HEADER

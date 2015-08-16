@@ -237,6 +237,11 @@ initial
         //INTERRUPT_TEST();
 		//repeat (1000) @(posedge clk);
 		
+		//Software Reset TEST
+		test = "Software Reset TEST";
+		SOFT_RST_TEST();
+		repeat (1000) @(posedge clk);
+		
 		\$display("*************************************************************************");
 		\$display("***********************     ALL TEST PASS!!!     ************************");
 		\$display("*************************************************************************");
@@ -495,6 +500,29 @@ task LED_TEST;
 		// \$display("*************************** MINISAS LED test pass ***************************\\n");
 		
 		\$display("*************************** LED test pass ***************************\\n");
+	end
+endtask
+
+//***************************	Software Reset TEST TASK	**************************
+task SOFT_RST_TEST;
+	begin
+		\$display("*************************** Software Reset test begin ***************************\\n");
+		test = "Write MINI SAS power enable 50H to 8'h55";
+		wb_write(`I2C_ADDR,8'h50,8'h55,0-8'h55,`WR_BYTE);
+		wb_write(`I2C_ADDR,8'hA0,8'h1,0-8'h1,`WR_BYTE);
+		//@(posedge tb_hattrick.HATTRICK_TOP_INST.SYSTEM_RST_N);
+		test = "Read MINI SAS power enable 50H";
+		wb_read(`I2C_ADDR,8'h1);
+		if(tb_hattrick.HATTRICK_TOP_INST.GPO5_INST.DO0 == 8'h0)
+			begin
+				\$display("Software Reset TEST Pass");
+			end
+		else
+			begin
+				\$display("Software Reset TEST Fail");
+				\$stop;
+			end
+		\$display("*************************** Software Reset test pass ***************************\\n");
 	end
 endtask
 

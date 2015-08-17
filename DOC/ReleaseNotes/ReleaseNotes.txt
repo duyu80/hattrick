@@ -1,0 +1,8 @@
+﻿hattrick_v0.4
+
+Add below features
+
+1) Add software reset register (0xA0)
+2) Use HDD insert signal for power control 
+   and tune the spin-up delay to 2s.
+

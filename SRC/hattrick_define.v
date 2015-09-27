@@ -21,7 +21,7 @@
 `endif
 
 `define CPLD_MAJ_VER    8'h00
-`define CPLD_MIN_VER    8'h04
+`define CPLD_MIN_VER    8'h05
 `define CHECKSUM        8'h0 - `CPLD_MAJ_VER - `CPLD_MIN_VER
 
 `define	I2C_ADDR		7'h61		//8bit address is C2

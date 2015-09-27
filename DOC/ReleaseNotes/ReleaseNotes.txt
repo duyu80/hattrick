@@ -1,8 +1,4 @@
-﻿hattrick_v0.4
+﻿hattrick_v0.5
 
-Add below features
-
-1) Add software reset register (0xA0)
-2) Use HDD insert signal for power control 
-   and tune the spin-up delay to 2s.
+Remove soft reset function from HDD power control module to keep the HDD power state after soft reset
 

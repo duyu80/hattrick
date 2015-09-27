@@ -192,7 +192,7 @@ GPO1_INST  (
 
 HDD_PWR  HDD_PWR_INST (
     .SYSCLK	              ( SYSCLK              ),
-    .RESET_N              ( SYSTEM_RST_N        ),
+    .RESET_N              ( RESET_N             ),
     .CLK_1HZ              ( CLK_1HZ             ),
     					  			
     .PWR_EN_HDD1_L_I2C	  ( PWR_EN_HDD1_L_I2C   ),

@@ -547,6 +547,28 @@ task LED_TEST;
 			end
 
 		$display("*************************** Fault LED test pass ***************************\n");
+
+		$display("*************************** PWM LED test begin ***************************\n");
+		
+		test = "PWM LED0 BLK_09_01S LED1 ON Test Write";
+		wb_write(`I2C_ADDR,8'h70,{`PWM,`LED_ON},0 - {`PWM,`LED_ON},`WR_BYTE);
+		test = "PWM LED0 BLK_09_01S LED1 ON Test Read";
+		wb_read(`I2C_ADDR,8'h1);
+		
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.ENCLOSURE_FAULT_LED);
+		repeat (`CLK_FRQ*9/10+10) @(posedge clk);
+		if(tb_hattrick.HATTRICK_TOP_INST.ENCLOSURE_FAULT_LED == `OFF)
+			begin
+				$display("PWM LED0 BLK_09_01S LED1 TEST Pass, the PWM LED set code is %x\n", i2c_rddata1);
+			end
+		else
+			begin
+				$display("PWM LED0 BLK_09_01S LED1 TEST Fail, the PWM LED set code is %x\n", i2c_rddata1);
+				$stop;
+			end
+		@(posedge tb_hattrick.HATTRICK_TOP_INST.ENCLOSURE_FAULT_LED);
+
+		$display("*************************** PWM LED test pass ***************************\n");
 		
 		// $display("*************************** MINISAS LED test begin ***************************\n");
 		

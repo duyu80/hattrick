@@ -21,7 +21,7 @@
 `endif
 
 `define CPLD_MAJ_VER    8'h00
-`define CPLD_MIN_VER    8'h05
+`define CPLD_MIN_VER    8'h06
 `define CHECKSUM        8'h0 - `CPLD_MAJ_VER - `CPLD_MIN_VER
 
 `define	I2C_ADDR		7'h61		//8bit address is C2
@@ -37,6 +37,7 @@
 `define	LED_ON_L		4'b0001
 `define	LED_OFF_L		4'b0000
 `define	BLK_1HZ			4'b0010
+`define	PWM             4'b0010
 `define	BLK_2HZ			4'b0011
 `define	BLK_4HZ			4'b0100
 `define	BLK_07S			4'b0101

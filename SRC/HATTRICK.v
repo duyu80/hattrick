@@ -84,6 +84,12 @@ wire    [7:0]	LED_REG7;
 wire            SOFT_RST;
 wire            SYSTEM_RST_N = RESET_N && !SOFT_RST;
 
+wire            A_HEALTH_LED,B_HEALTH_LED;
+assign          A_HEALTH_LED_L = ~A_HEALTH_LED;
+assign          B_HEALTH_LED_L = ~B_HEALTH_LED;
+wire            ENCLOSURE_HEALTH_LED;
+assign          ENCLOSURE_HEALTH_LED_L = ~ENCLOSURE_HEALTH_LED;
+
 //**************************************************************************
 //**                          
 //**  This instance is I2C MACHINE, CPLD use this I2C MACHINE to read/write
@@ -494,7 +500,7 @@ GPO6_INST (
 
 			.DO0		    ( MINISAS_LEDA ),
 			.DO1		    ( MINISAS_LEDB ),
-			.DO2		    ( ENCLOSURE_LED ),
+			.DO2		    (),
 			.DO3		    (),
 			.DO4		    (),
 			.DO5		    (),
@@ -530,9 +536,9 @@ LED MINISAS_LED_INST(
             .LED_REG6               (),
             .LED_REG7               (),
  
-            .LED0                   ( A_HEALTH_LED_L ),
+            .LED0                   ( A_HEALTH_LED   ),
             .LED1                   ( A_FAULT_LED    ),
-            .LED2                   ( B_HEALTH_LED_L ),
+            .LED2                   ( B_HEALTH_LED   ),
             .LED3                   ( B_FAULT_LED    ),
             .LED4                   (),
             .LED5                   (),
@@ -549,8 +555,7 @@ LED MINISAS_LED_INST(
 		);
 
 // 70H --- ENCLOSURE LED
-wire    [7:0]  ENCLOSURE_LEDA;
-wire    [7:0]  ENCLOSURE_LEDB;
+wire    [7:0]  ENCLOSURE_LED;
 
 GPO         # (
             .GPO_DFT        (8'h11)
@@ -565,8 +570,8 @@ GPO7_INST (
 			.RD_WR1		    (RD_WR),
 			.DIN1			(I2C_DOUT),
 
-			.DO0		    ( ENCLOSURE_LEDA ),
-			.DO1		    ( ENCLOSURE_LEDB ),
+			.DO0		    ( ENCLOSURE_LED ),
+			.DO1		    (),
 			.DO2		    (),
 			.DO3		    (),
 			.DO4		    (),
@@ -584,41 +589,14 @@ GPO7_INST (
 			);
 
 // ENCLOSURE LED
-LED ENCLOSURE_LED_INST(
+EnclosureLED ENCLOSURE_LED_INST(
             .SYSCLK					(SYSCLK),
             .RESET_N				(SYSTEM_RST_N),
-            .CLK_1HZ				(CLK_1HZ),
-            .CLK_2HZ				(CLK_2HZ),
-            .CLK_4HZ				(CLK_4HZ),
-            .CLK_4HZ_500MS          (CLK_4HZ_500MS),
-            .CLK_4HZ_3500MS         (CLK_4HZ_3500MS),
-            .CLK_07S				(CLK_07S),
 			
-            .LED_REG0               ( ENCLOSURE_LEDA ),
-            .LED_REG1               ( ENCLOSURE_LEDB ),
-            .LED_REG2               (),
-            .LED_REG3               (),
-            .LED_REG4               (),
-            .LED_REG5               (),
-            .LED_REG6               (),
-            .LED_REG7               (),
+            .LED_REG                ( ENCLOSURE_LED ),
  
-            .LED0                   ( ENCLOSURE_HEALTH_LED_L ),
-            .LED1                   ( ENCLOSURE_FAULT_LED    ),
-            .LED2                   (),
-            .LED3                   (),
-            .LED4                   (),
-            .LED5                   (),
-            .LED6                   (),
-            .LED7                   (),
-            .LED8                   (),
-            .LED9                   (),
-            .LED10                  (),
-            .LED11                  (),
-            .LED12                  (),
-            .LED13                  (),
-            .LED14                  (),
-            .LED15                  ()
+            .EnclosureLED0          ( ENCLOSURE_HEALTH_LED   ),
+            .EnclosureLED1          ( ENCLOSURE_FAULT_LED    )
 		);
 
 // 80H --- HW REVISION

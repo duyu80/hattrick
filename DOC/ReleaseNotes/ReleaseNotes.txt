@@ -1,4 +1,4 @@
-﻿hattrick_v0.5
+﻿hattrick_v0.6
 
-Remove soft reset function from HDD power control module to keep the HDD power state after soft reset
+Fix issue 5 and issue 8 for LED
 

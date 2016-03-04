@@ -1,4 +1,4 @@
-﻿hattrick_v0.6
+﻿hattrick_v0.7
 
-Fix issue 5 and issue 8 for LED
+Change CPLD Reset from B11 to A3
 

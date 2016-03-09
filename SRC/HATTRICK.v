@@ -15,6 +15,7 @@ module HATTRICK_TOP (
 			// I2C
 			input     SCL,
 			inout     SDA,
+            input     I2C_RESET_N,
             // HDD insert
 			input     HDD4_INSERT_L,HDD3_INSERT_L,HDD2_INSERT_L,HDD1_INSERT_L,
 			          HDD8_INSERT_L,HDD7_INSERT_L,HDD6_INSERT_L,HDD5_INSERT_L,
@@ -100,7 +101,7 @@ I2C  I2C_INS  (
 			   .SCL		   		    (SCL),
 			   .SDA		   		    (SDA),
 			   .I2C_ADDRESS		    (`I2C_ADDR),
-			   .I2C_RESET_N		    (RESET_N),
+			   .I2C_RESET_N		    (RESET_N & I2C_RESET_N),
 			   .SYSCLK     			(SYSCLK),
 			   .PORT_CS    		    (PORT_CS),
 			   .OFFSET_SEL 		    (OFFSET_SEL),

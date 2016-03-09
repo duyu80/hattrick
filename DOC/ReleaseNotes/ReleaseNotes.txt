@@ -1,4 +1,7 @@
-﻿hattrick_v0.7
+﻿hattrick_v0.8
 
-Change CPLD Reset from B11 to A3
+Implement two reset sources in this version
+a) Pin A3(EXP_RST_CPLD) is used as TWI reset, it is the low active signal for reset I2C state machine.
+b) Pin B11(RST_CPLD_L) is used as globe reset for CPLD, it is also the low active signal for reset all the registers in CPLD.
+
 
